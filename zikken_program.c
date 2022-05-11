@@ -4,7 +4,9 @@
 int main()
 {
   FILE *fp = NULL;
-  double time = 0; //経過時間
+  double currenttime = 0; //現在の経過時間
+  double pretime = 0; //直前の経過時間
+  double time = 0;
   double volt = 0;
   double currentvolt = 0; //現在の電圧
   double currentgrad = 0; //現在の傾き
@@ -15,14 +17,16 @@ int main()
   while(fscanf(fp, "%lf,%lf", &time, &volt) != EOF)
     {
       currentvolt = volt;
+      currenttime = time;
       //printf("%lf\n", pregrad); for debug
       currentgrad = currentvolt - prevolt; //現在の傾きの差分を出す
       if((currentgrad < 0) && (pregrad > 0))
         {
-          printf("経過時間:%lf[s],ピーク電圧%lf[V]\n", time, currentvolt);
+          printf("経過時間:%lf[s],ピーク電圧%lf[V]\n", pretime, prevolt);
         }//傾きが正から負へ変わるときに極大となる
 
       prevolt = currentvolt;
+      pretime = currenttime;
       pregrad = currentgrad;
 
     }
